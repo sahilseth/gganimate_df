@@ -26,17 +26,19 @@ library(reshape2)
 library(dplyr)
 
 tmp <- lapply(1:(rows-2), function(i){
-  message("> working on, ", i)
+  #message("> working on, ", i)
   tmp = lapply(1:(cols-2), function(j){
     
-    #message("> working on, ", i, " ", j)
+    message("> working on, ", i, " ", j)
     # current df
     cur_df = init_df
     cur_df$row = cur_df$row + (i - 1)
     cur_df$col = cur_df$col + (j - 1)
-    mat[cur_df$row, cur_df$col] = 1
-    
-    data.frame(melt(mat, varnames = c("row", "col")), coords = paste0(letters[i], " ", letters[j]))
+    # assign values 1
+    mat[as.matrix(cur_df)] <- 1
+    print(sum(mat[as.matrix(cur_df)]))
+
+    data.frame(melt(mat, varnames = c("row", "col")), coords = paste0(i, " ", j))
     
   })    
   bind_rows(tmp)
